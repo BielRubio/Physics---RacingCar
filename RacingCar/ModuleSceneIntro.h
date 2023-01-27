@@ -29,7 +29,7 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
-	void AddCheckPoint(vec3 position, float angle, Color color, int id, bool startChecked);
+	void AddCheckPoint(vec3 position, float angle, float width, Color color, int id, bool startChecked);
 
 public:
 

@@ -25,7 +25,7 @@ bool ModuleSceneIntro::Start()
 	p.wire = false;
 	p.color = Green;
 
-	AddCheckPoint({ 0, 0, 100 }, 90, White, 2, false); // meta
+	AddCheckPoint({ 0, 0, 100 }, 90, 20, White, 2, false); // meta
 
 	return ret;
 }
@@ -61,14 +61,14 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 }
 
-void ModuleSceneIntro::AddCheckPoint(vec3 position, float angle, Color color, int id, bool startChecked) {
+void ModuleSceneIntro::AddCheckPoint(vec3 position, float angle, float width, Color color, int id, bool startChecked) {
 	//Sensor
 	Cube sensor;
-	sensor.size = { 5,5,10 };
+	sensor.size = { 5,5,width };
 	sensor.SetPos(position.x, position.y + 3, position.z);
 	sensor.SetRotation(angle, { 0, 1, 0 });
 
-	float radius = 10 / 2;
+	float radius = width / 2;
 	vec3 positionLeftFlag(0, position.y + 2.9, radius);
 	vec3 positionRightFlag(0, position.y + 2.9, -radius);
 	float theta = angle * M_PI / 180;
