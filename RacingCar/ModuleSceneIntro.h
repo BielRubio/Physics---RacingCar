@@ -9,6 +9,14 @@
 struct PhysBody3D;
 struct PhysMotor3D;
 
+struct CheckPoint {
+	PhysBody3D* body;
+	Cylinder leftC, rightC;
+	Cube colorBody;
+	float angle;
+	bool checked;
+};
+
 class ModuleSceneIntro : public Module
 {
 public:
@@ -21,7 +29,12 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
+	void AddCheckPoint(vec3 position, float angle, Color color, int id, bool startChecked);
+
 public:
+
+	p2List<CheckPoint> checkPoints;
+	p2List<Cylinder> Cylinders;
 	/*
 	PhysBody3D* pb_snake[MAX_SNAKE];
 	Sphere s_snake[MAX_SNAKE];
