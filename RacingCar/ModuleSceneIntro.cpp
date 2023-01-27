@@ -28,6 +28,8 @@ bool ModuleSceneIntro::Start()
 	ground.color = Green;
 
 
+	AddCheckPoint({ 0, 0, 100 }, 90, 20, White, 2, false); // meta
+
 	return ret;
 }
 
@@ -65,10 +67,67 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	ground.Render();
 
+	p2List_item<CheckPoint>* c = checkPoints.getFirst();
+	while (c != NULL) {
+		if (c->data.checked == false) {
+			c->data.colorBody.Render();
+		}
+		c = c->next;
+	}
+
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
+}
+
+void ModuleSceneIntro::AddCheckPoint(vec3 position, float angle, float width, Color color, int id, bool startChecked) {
+	//Sensor
+	Cube sensor;
+	sensor.size = { 5,5,width };
+	sensor.SetPos(position.x, position.y + 3, position.z);
+	sensor.SetRotation(angle, { 0, 1, 0 });
+
+	float radius = width / 2;
+	vec3 positionLeftFlag(0, position.y + 2.9, radius);
+	vec3 positionRightFlag(0, position.y + 2.9, -radius);
+	float theta = angle * M_PI / 180;
+	positionLeftFlag.x += radius * sin(theta); positionLeftFlag.z = positionLeftFlag.z * cos(theta);
+	positionRightFlag.x -= radius * sin(theta); positionRightFlag.z = positionRightFlag.z * cos(theta);
+
+	// Sensor left mark
+	Cylinder leftFlag;
+	leftFlag.radius = 2;
+	leftFlag.height = 5;
+	leftFlag.color = color;
+	leftFlag.SetPos(positionLeftFlag.x + position.x, positionLeftFlag.y - 1, positionLeftFlag.z + position.z);
+	leftFlag.SetRotation(90, { 0, 0, 1 });
+
+	// Sensor right mark
+	Cylinder rightFlag;
+	rightFlag.radius = 2;
+	rightFlag.height = 5;
+	rightFlag.color = color;
+	rightFlag.SetPos(positionRightFlag.x + position.x, positionRightFlag.y - 1, positionRightFlag.z + position.z);
+	rightFlag.SetRotation(90, { 0, 0, 1 });
+	// Create Checkpoint
+	CheckPoint sensorCP;
+	sensorCP.body = App->physics->AddBody(sensor, 0.0f);
+	sensorCP.body->SetAsSensor(true);
+	sensorCP.body->SetId(id);
+	sensorCP.angle = angle;
+	sensorCP.checked = startChecked;
+	sensorCP.leftC = leftFlag;
+	sensorCP.rightC = rightFlag;
+	sensorCP.colorBody = sensor;
+	sensorCP.colorBody.color = color;
+
+	Cylinders.add(sensorCP.leftC);
+	App->physics->AddBody(sensorCP.leftC, 0);
+	Cylinders.add(sensorCP.rightC);
+	App->physics->AddBody(sensorCP.rightC, 0);
+
+	checkPoints.add(sensorCP);
 }
 

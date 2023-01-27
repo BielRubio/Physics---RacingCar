@@ -19,6 +19,8 @@ public:
 	void GetTransform(float* matrix) const;
 	void SetTransform(const float* matrix) const;
 	void SetPos(float x, float y, float z);
+	void SetAsSensor(bool isSensor);
+	void SetId(int id);
 
 	btVector3 GetLinearVelocity();
 
@@ -27,6 +29,8 @@ private:
 
 public:
 	p2List<Module*> collision_listeners;
+	int id;
+	bool isSensor;
 };
 
 #endif // __PhysBody3D_H__
