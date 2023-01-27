@@ -115,25 +115,27 @@ update_status ModulePlayer::Update(float dt)
 {
 	turn = acceleration = brake = 0.0f;
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && vehicle->GetKmh() <= 120)
 	{
 		acceleration = MAX_ACCELERATION;
 	}
 	App->physics->DragForce(vehicle, 25);
 
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		if(turn < TURN_DEGREES)
 			turn +=  TURN_DEGREES;
-	}
 
-	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		
+	}
+	LOG("%f", vehicle->GetKmh() * TURN_DEGREES * RADTODEG / 150)
+	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		if(turn > -TURN_DEGREES)
 			turn -= TURN_DEGREES;
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		brake = BRAKE_POWER;
 	}
@@ -143,7 +145,7 @@ update_status ModulePlayer::Update(float dt)
 	}
 	//Apply friction (in case no acceleration or in case it goes too quick, the vehicle starts loosing speed)
 
-	if (App->input->GetKey(SDL_SCANCODE_UP) != KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_DOWN) != KEY_REPEAT) {
+	if (App->input->GetKey(SDL_SCANCODE_UP) != KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT) {
 		brake = BRAKE_POWER / 100;
 
 		if (vehicle->GetKmh() > 100) {

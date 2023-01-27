@@ -17,13 +17,16 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
-	App->camera->LookAt(vec3(0, 0, 0));
+	//Initialize variables
 
-	p = Plane(0, 0, 0, 0);
-	p.axis = false;
-	p.wire = false;
-	p.color = Green;
+	camView = (CAM_VIEW)0;
+
+	//Initialize map
+
+	ground = Cube(100, 0, 100);
+	ground.SetPos(0, 0, 0);
+	ground.color = Green;
+
 
 	return ret;
 }
@@ -39,10 +42,28 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	App->camera->LookAt(App->player->pos + App->player->fwVec * 10);
-	App->camera->Position = { App->player->pos.x - App->player->fwVec.x * 12,App->player->pos.y + 7,App->player->pos.z- App->player->fwVec.z * 12 };
+	//Change Cam view
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_STATE::KEY_DOWN) camView = CAM_VIEW::BEHIND_PLAYER;
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_STATE::KEY_DOWN) camView = CAM_VIEW::LOCK_PLAYER;
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_STATE::KEY_DOWN) camView = CAM_VIEW::FREE_CAM;
+		
+	switch (camView)
+	{
+	case CAM_VIEW::BEHIND_PLAYER:
+		App->camera->LookAt({ App->player->pos.x + App->player->fwVec.x * 10, App->player->pos.y, App->player->pos.z + App->player->fwVec.z * 10 });
+		App->camera->Position = { App->player->pos.x - App->player->fwVec.x * 12,App->player->pos.y + 7,App->player->pos.z - App->player->fwVec.z * 12 };
+		break;
+	case CAM_VIEW::LOCK_PLAYER:
+		App->camera->LookAt(App->player->pos);
+		break;
+	}
+	
 
-	p.Render();
+	
+
+	//Render map
+
+	ground.Render();
 
 	return UPDATE_CONTINUE;
 }

@@ -6,6 +6,12 @@
 
 #define MAX_SNAKE 2
 
+enum class CAM_VIEW{
+	BEHIND_PLAYER = 0,
+	LOCK_PLAYER,
+	FREE_CAM
+};
+
 struct PhysBody3D;
 struct PhysMotor3D;
 
@@ -41,6 +47,14 @@ public:
 
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
+	
+	//Cam settings
 
-	Plane p;
+	CAM_VIEW camView;
+
+	//Map
+
+	int baseH;
+
+	Cube ground;
 };
