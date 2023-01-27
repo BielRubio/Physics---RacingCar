@@ -1,6 +1,7 @@
 #include "PhysBody3D.h"
 #include "glmath.h"
 #include "Bullet/include/btBulletDynamicsCommon.h"
+#include "Bullet/include/LinearMath/btVector3.h"
 
 // =================================================
 PhysBody3D::PhysBody3D(btRigidBody* body) : body(body)
@@ -44,4 +45,10 @@ void PhysBody3D::SetPos(float x, float y, float z)
 	btTransform t = body->getWorldTransform();
 	t.setOrigin(btVector3(x, y, z));
 	body->setWorldTransform(t);
+}
+
+btVector3 PhysBody3D::GetLinearVelocity(){
+	btVector3 returnV;
+	returnV = body->getLinearVelocity();
+	return returnV;
 }

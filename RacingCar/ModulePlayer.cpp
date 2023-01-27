@@ -119,6 +119,7 @@ update_status ModulePlayer::Update(float dt)
 	{
 		acceleration = MAX_ACCELERATION;
 	}
+	App->physics->DragForce(vehicle, 250);
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
@@ -135,6 +136,10 @@ update_status ModulePlayer::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
 		brake = BRAKE_POWER;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+		acceleration = MAX_ACCELERATION * 5;
 	}
 
 	vehicle->ApplyEngineForce(acceleration);

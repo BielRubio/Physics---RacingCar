@@ -360,6 +360,22 @@ void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, c
 	hinge->setDbgDrawSize(2.0f);
 }
 
+void ModulePhysics3D::SetGravity(vec3 g) {
+
+}
+
+vec3 ModulePhysics3D::DragForce(PhysBody3D* body, float density) {
+	float dragModule;
+	dragModule = 0.5f * density;
+
+	vec3 forceDrag = { -dragModule * body->GetLinearVelocity().getX(), -dragModule * body->GetLinearVelocity().getY(),-dragModule * body->GetLinearVelocity().getZ() };
+	return forceDrag;
+}
+
+vec3 ModulePhysics3D::LiftForce(PhysBody3D* body, float density) {
+	return 0;
+}
+
 // =============================================
 void DebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
 {
