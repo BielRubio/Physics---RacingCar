@@ -25,7 +25,7 @@ bool ModuleSceneIntro::Start()
 	p.wire = false;
 	p.color = Green;
 
-	AddCheckPoint({ 0, 0, 100 }, 90, Magenta, 2, false); // meta
+	AddCheckPoint({ 0, 0, 100 }, 90, White, 2, false); // meta
 
 	return ret;
 }
@@ -45,6 +45,14 @@ update_status ModuleSceneIntro::Update(float dt)
 	App->camera->Position = { App->player->pos.x - App->player->fwVec.x * 12,App->player->pos.y + 7,App->player->pos.z- App->player->fwVec.z * 12 };
 
 	p.Render();
+
+	p2List_item<CheckPoint>* c = checkPoints.getFirst();
+	while (c != NULL) {
+		if (c->data.checked == false) {
+			c->data.colorBody.Render();
+		}
+		c = c->next;
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -92,7 +100,7 @@ void ModuleSceneIntro::AddCheckPoint(vec3 position, float angle, Color color, in
 	sensorCP.leftC = leftFlag;
 	sensorCP.rightC = rightFlag;
 	sensorCP.colorBody = sensor;
-	sensorCP.colorBody.color = Magenta;
+	sensorCP.colorBody.color = color;
 
 	Cylinders.add(sensorCP.leftC);
 	App->physics->AddBody(sensorCP.leftC, 0);
