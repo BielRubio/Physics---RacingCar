@@ -141,6 +141,14 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
 
+	pos = {vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getX(),
+			vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getY(), 
+			vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getZ(),};
+
+	fwVec = {vehicle->vehicle->getForwardVector().getX(),
+			vehicle->vehicle->getForwardVector().getY(),
+			vehicle->vehicle->getForwardVector().getZ(), };
+
 	vehicle->Render();
 
 	char title[80];
