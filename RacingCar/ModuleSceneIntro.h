@@ -54,4 +54,6 @@ public:
 
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
+
+	Plane p;
 };

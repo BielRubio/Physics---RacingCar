@@ -20,6 +20,11 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
+	p = Plane(0, 0, 0, 0);
+	p.axis = false;
+	p.wire = false;
+	p.color = Green;
+
 	AddCheckPoint({ 0, 0, 100 }, 90, Magenta, 2, false); // meta
 
 	return ret;
@@ -39,9 +44,6 @@ update_status ModuleSceneIntro::Update(float dt)
 	App->camera->LookAt(App->player->pos + App->player->fwVec * 10);
 	App->camera->Position = { App->player->pos.x - App->player->fwVec.x * 12,App->player->pos.y + 7,App->player->pos.z- App->player->fwVec.z * 12 };
 
-	Plane p(0, 1, 0, 0);
-	p.axis = true;
-	p.color = {0,255,0};
 	p.Render();
 
 	return UPDATE_CONTINUE;
