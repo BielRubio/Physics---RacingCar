@@ -119,7 +119,7 @@ update_status ModulePlayer::Update(float dt)
 	{
 		acceleration = MAX_ACCELERATION;
 	}
-	App->physics->DragForce(vehicle, 250);
+	App->physics->DragForce(vehicle, 25);
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
@@ -141,6 +141,16 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
 		acceleration = MAX_ACCELERATION * 5;
 	}
+	//Apply friction (in case no acceleration or in case it goes too quick, the vehicle starts loosing speed)
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) != KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_DOWN) != KEY_REPEAT) {
+		brake = BRAKE_POWER / 100;
+
+		if (vehicle->GetKmh() > 100) {
+			brake = BRAKE_POWER / 20;
+		}
+	}
+	
 
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
