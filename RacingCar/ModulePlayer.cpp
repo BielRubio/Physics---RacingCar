@@ -96,8 +96,16 @@ bool ModulePlayer::Start()
 	car.wheels[3].brake = true;
 	car.wheels[3].steering = false;
 
+
+	
+
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(0, 0.3, 0);
+
+	vehicle->collision_listeners.add(this);
+	vehicle->SetId(1);
+
+	
 	
 	return true;
 }
@@ -123,16 +131,41 @@ update_status ModulePlayer::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		if(turn < TURN_DEGREES)
-			turn +=  TURN_DEGREES;
-
-		
+		if (vehicle->GetKmh() > 110) {
+			if (turn < TURN_DEGREES)
+				turn += TURN_DEGREES/2;
+		}
+		else if (vehicle->GetKmh() > 90) {
+			if (turn < TURN_DEGREES)
+				turn += TURN_DEGREES / 1.75;
+		}
+		else if (vehicle->GetKmh() > 70) {
+			if (turn < TURN_DEGREES)
+				turn += TURN_DEGREES / 1.5;
+		}
+		else {
+			if (turn < TURN_DEGREES)
+				turn += TURN_DEGREES;
+		}
 	}
-	LOG("%f", vehicle->GetKmh() * TURN_DEGREES * RADTODEG / 150)
 	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		if(turn > -TURN_DEGREES)
-			turn -= TURN_DEGREES;
+		if (vehicle->GetKmh() > 110) {
+			if (turn < TURN_DEGREES)
+				turn -= TURN_DEGREES / 2;
+		}
+		else if (vehicle->GetKmh() > 90) {
+			if (turn < TURN_DEGREES)
+				turn -= TURN_DEGREES / 1.75;
+		}
+		else if (vehicle->GetKmh() > 70) {
+			if (turn < TURN_DEGREES)
+				turn -= TURN_DEGREES / 1.5;
+		}
+		else {
+			if (turn < TURN_DEGREES)
+				turn -= TURN_DEGREES;
+		}
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -175,5 +208,33 @@ update_status ModulePlayer::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
+void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
+	//Collide with the checkpoint added
+	if (body2->id == 2) {
+		if (App->scene_intro->checkPoints.getFirst()->data.checked == false) {
+			//Update of laps
+			LOG("COLLIDE WITH CHECKPOINT");
+		}
+		App->scene_intro->checkPoints.getFirst()->data.checked = true;
+		App->scene_intro->checkPoints.getFirst()->next->data.checked = false;
+		
+	}
+	else if (body2->id > 2 && body2->id < 5) {
+		p2List_item<CheckPoint>* checklist = App->scene_intro->checkPoints.getFirst();
+
+		while (checklist != NULL) {
+			if (checklist->data.body->id == body2->id) {
+				if (checklist->data.checked == false) {
+					checklist->data.checked = true;
+					checklist->next->data.checked = false;
+				}
+			}
+		}
+		
+		checklist = checklist->next;
+		
+	}
+	LOG("COLLIDE WITH CHECKPOINT");
+}
 
 

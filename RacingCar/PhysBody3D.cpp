@@ -52,11 +52,11 @@ btVector3 PhysBody3D::GetLinearVelocity(){
 	returnV = body->getLinearVelocity();
 	return returnV;
 }
-void PhysBody3D::SetAsSensor(bool isSensor) {
-	if (this->isSensor != isSensor)
+void PhysBody3D::SetAsSensor(bool is_sensor) {
+	if (this->is_sensor != is_sensor)
 	{
-		this->isSensor = isSensor;
-		if (isSensor == true)
+		this->is_sensor = is_sensor;
+		if (is_sensor == true)
 			body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
 		else
 			body->setCollisionFlags(body->getCollisionFlags() & ~btCollisionObject::CF_NO_CONTACT_RESPONSE);
