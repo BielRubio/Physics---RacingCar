@@ -69,6 +69,9 @@ bool ModulePhysics3D::Start()
 	return true;
 }
 
+void ModulePhysics3D::SetGravity(vec3 g) {
+	world->setGravity({ g.x, g.y, g.z });
+}
 // ---------------------------------------------------------
 update_status ModulePhysics3D::PreUpdate(float dt)
 {
@@ -318,6 +321,7 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 	// ---------------------
 
 	PhysVehicle3D* pvehicle = new PhysVehicle3D(body, vehicle, info);
+	body->setUserPointer(pvehicle);
 	world->addVehicle(vehicle);
 	vehicles.add(pvehicle);
 
@@ -350,10 +354,6 @@ void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, c
 	world->addConstraint(hinge, disable_collision);
 	constraints.add(hinge);
 	hinge->setDbgDrawSize(2.0f);
-}
-
-void ModulePhysics3D::SetGravity(vec3 g) {
-
 }
 
 vec3 ModulePhysics3D::DragForce(PhysBody3D* body, float density) {

@@ -25,13 +25,12 @@ public:
 	btVector3 GetLinearVelocity();
 	void SetLinearVelocity(btVector3 lv);
 
-private:
-	btRigidBody* body = nullptr;
-
 public:
 	p2List<Module*> collision_listeners;
 	int id;
 	bool is_sensor;
+
+	btRigidBody* body = nullptr;
 };
 
 #endif // __PhysBody3D_H__
