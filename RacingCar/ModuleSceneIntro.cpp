@@ -114,10 +114,93 @@ bool ModuleSceneIntro::Start()
 	road16.color = { 0.5f,0.5f,0.5f };
 	pb_road16 = App->physics->AddBody(road16, 0);
 
-	road17 = Cube(70, 0.2, 70);
-	road17.SetPos(-290 - 75, 0, 140);
+	road17 = Cube(70, 0.2, 120);
+	road17.SetPos(-290 - 75, 0, 120);
 	road17.color = { 0.5f,0.5f,0.5f };
 	pb_road17 = App->physics->AddBody(road17, 0);
+
+	road18 = Cube(20, 0.2, 70);
+	road18.SetPos(-290 - 75, 0, 25);
+	road18.color = { 0.5f,0.5f,0.5f };
+	pb_road18 = App->physics->AddBody(road18, 0);
+
+	road19 = Cube(40, 0.2, 20);
+	road19.SetPos(-280 - 75, 0, -20);
+	road19.color = { 0.5f,0.5f,0.5f };
+	pb_road19 = App->physics->AddBody(road19, 0);
+
+	road20 = Cube(40, 0.2, 20);
+	road20.SetPos(-260 - 75, 0, -40);
+	road20.color = { 0.5f,0.5f,0.5f };
+	pb_road20 = App->physics->AddBody(road20, 0);
+
+	road21 = Cube(40, 0.2, 20);
+	road21.SetPos(-240 - 75, 0, -60);
+	road21.color = { 0.5f,0.5f,0.5f };
+	pb_road21 = App->physics->AddBody(road21, 0);
+
+	road22 = Cube(40, 0.2, 20);
+	road22.SetPos(-220 - 75, 0, -80);
+	road22.color = { 0.5f,0.5f,0.5f };
+	pb_road22 = App->physics->AddBody(road22, 0);
+
+	road23 = Cube(40, 0.2, 20);
+	road23.SetPos(-200 - 75, 0, -100);
+	road23.color = { 0.5f,0.5f,0.5f };
+	pb_road23 = App->physics->AddBody(road23, 0);
+
+	road24 = Cube(80, 0.2, 80);
+	road24.SetPos(-180 - 75, 0, -150);
+	road24.color = { 0.5f,0.5f,0.5f };
+	pb_road24 = App->physics->AddBody(road24, 0);
+
+	roundab1 = Cylinder(20,30);
+	roundab1.SetPos(-180 - 75, 0, -150);
+	roundab1.SetRotation(90, { 0,0,1 });
+	roundab1.color = Magenta;
+	pb_roundab1 = App->physics->AddBody(roundab1, 0);
+
+	road25 = Cube(20, 0.2, 120);
+	road25.SetPos(-210 - 75, 0, -250);
+	road25.color = { 0.5f,0.5f,0.5f };
+	pb_road25 = App->physics->AddBody(road25, 0);
+
+	road26 = Cube(60, 0.2, 20);
+	road26.SetPos(-170 - 95, 0, -320);
+	road26.color = { 0.5f,0.5f,0.5f };
+	pb_road26 = App->physics->AddBody(road26, 0);
+
+	road27 = Cube(20, 20, 20);
+	road27.SetPos(-170 - 55, -9, -320);
+	road27.SetRotation(5, { 0,0,1 });
+	road27.color = { 0.5f,0.5f,0.5f };
+	pb_road27 = App->physics->AddBody(road27, 0);
+
+	road28 = Cube(20, 20, 20);
+	road28.SetPos(-170, -9, -320);
+	road28.SetRotation(-5, { 0,0,1 });
+	road28.color = { 0.5f,0.5f,0.5f };
+	pb_road28 = App->physics->AddBody(road28, 0);
+
+	road29 = Cube(60, 0.2, 20);
+	road29.SetPos(-130, 0, -320);
+	road29.color = { 0.5f,0.5f,0.5f };
+	pb_road29 = App->physics->AddBody(road29, 0);
+
+	road30 = Cube(50, 0.2, 50);
+	road30.SetPos(-75, 0, -305);
+	road30.color = { 0.5f,0.5f,0.5f };
+	pb_road30 = App->physics->AddBody(road30, 0);
+
+	road31 = Cube(20, 0.2, 80);
+	road31.SetPos(-60, 0, -240);
+	road31.color = { 0.5f,0.5f,0.5f };
+	pb_road31 = App->physics->AddBody(road31, 0);
+
+	road32 = Cube(80, 0.2, 50);
+	road32.SetPos(-30, 0, -175);
+	road32.color = { 0.5f,0.5f,0.5f };
+	pb_road32 = App->physics->AddBody(road32, 0);
 
 	//AddCheckPoint({ 0, 0, 100 }, 90, 20, White, 2, false); // meta
 	//AddCheckPoint({ 25, 0, 200 }, 0, 30, Red, 3, false); // meta
@@ -180,8 +263,22 @@ update_status ModuleSceneIntro::Update(float dt)
 	road15.Render();
 	road16.Render();
 	road17.Render();
-	//road18.Render();
-	//road19.Render();
+	road18.Render();
+	road19.Render();
+	road20.Render();
+	road21.Render();
+	road22.Render();
+	road23.Render();
+	road24.Render();
+	roundab1.Render();
+	road25.Render();
+	road26.Render();
+	road27.Render();
+	road28.Render();
+	road29.Render();
+	road30.Render();
+	road31.Render();
+	road32.Render();
 
 
 
