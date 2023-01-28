@@ -61,7 +61,7 @@ void PhysBody3D::SetAsSensor(bool isSensor) {
 	if (this->is_sensor != isSensor)
 	{
 		this->is_sensor = isSensor;
-		if (isSensor == true)
+		if (is_sensor == true)
 			body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
 		else
 			body->setCollisionFlags(body->getCollisionFlags() & ~btCollisionObject::CF_NO_CONTACT_RESPONSE);
