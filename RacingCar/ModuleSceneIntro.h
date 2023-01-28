@@ -83,6 +83,10 @@ public:
 	Cube road5;
 	PhysBody3D* pb_road6;
 	Cube road6;
+	//^^^
+	PhysBody3D* pb_joint1;
+	Cylinder joint1;
+	//vvv
 	PhysBody3D* pb_road7;
 	Cube road7;
 	PhysBody3D* pb_road8;
@@ -91,5 +95,23 @@ public:
 	Cube road9;
 	PhysBody3D* pb_road10;
 	Cube road10;
+	PhysBody3D* pb_road11;
+	Cube road11;
+	PhysBody3D* pb_road12;
+	Cube road12;
+	PhysBody3D* pb_road13;
+	Cube road13;
+	PhysBody3D* pb_road14;
+	Cube road14;
+	PhysBody3D* pb_road15;
+	Cube road15;
+	PhysBody3D* pb_road16;
+	Cube road16;
+	PhysBody3D* pb_road17;
+	Cube road17;
+	PhysBody3D* pb_road18;
+	Cube road18;
+	PhysBody3D* pb_road19;
+	Cube road19;
 
 };

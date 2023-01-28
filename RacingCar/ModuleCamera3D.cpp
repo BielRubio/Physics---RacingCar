@@ -45,7 +45,7 @@ update_status ModuleCamera3D::Update(float dt)
 	float speed = 3.0f * dt;
 	if (App->scene_intro->camView == CAM_VIEW::FREE_CAM){
 		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT || App->scene_intro->camView == CAM_VIEW::LOCK_PLAYER)
-			speed = 8.0f * dt;
+			speed = 50.0f * dt;
 
 		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
 		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;

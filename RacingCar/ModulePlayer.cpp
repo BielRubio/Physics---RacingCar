@@ -211,13 +211,6 @@ update_status ModulePlayer::Update(float dt)
 
 	vehicle->Render();
 
-	Cube frontPiece;
-	frontPiece = Cube(1.6, 0.3, 0.7);
-	frontPiece.color = Red;
-	frontPiece.SetPos(pos.x, pos.y + 0.7, pos.z + 1);
-	frontPiece.SetRotation(vehicle->vehicle->getForwardVector().angle({ 1,0,0 }), { vehicle->vehicle->getForwardVector().getX(),vehicle->vehicle->getForwardVector().getY(),vehicle->vehicle->getForwardVector().getZ() });
-	frontPiece.Render();
-
 	char title[80];
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);
