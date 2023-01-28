@@ -23,6 +23,7 @@ public:
 	void SetId(int id);
 
 	btVector3 GetLinearVelocity();
+	void SetLinearVelocity(btVector3 lv);
 
 private:
 	btRigidBody* body = nullptr;

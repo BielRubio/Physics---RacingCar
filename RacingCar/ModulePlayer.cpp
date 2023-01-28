@@ -113,9 +113,19 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
 {
+	//DEBUG FUNCTIONS
+	//Respawn car at starting point
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		float aux[16] = { 1,0,0,0,0,1,0,0.3,0,0,1,0,0,0,0,1 };
+
+		vehicle->SetTransform(aux);
+		vehicle->SetLinearVelocity({ 0,0,0 });
+	}
+
 	turn = acceleration = brake = 0.0f;
 
-	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && vehicle->GetKmh() <= 120)
+	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && vehicle->GetKmh() <= 200)
 	{
 		acceleration = MAX_ACCELERATION;
 	}
@@ -167,6 +177,13 @@ update_status ModulePlayer::Update(float dt)
 			vehicle->vehicle->getForwardVector().getZ(), };
 
 	vehicle->Render();
+
+	Cube frontPiece;
+	frontPiece = Cube(1.6, 0.3, 0.7);
+	frontPiece.color = Red;
+	frontPiece.SetPos(pos.x, pos.y + 0.7, pos.z + 1);
+	frontPiece.SetRotation(vehicle->vehicle->getForwardVector().angle({ 1,0,0 }), { vehicle->vehicle->getForwardVector().getX(),vehicle->vehicle->getForwardVector().getY(),vehicle->vehicle->getForwardVector().getZ() });
+	frontPiece.Render();
 
 	char title[80];
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());

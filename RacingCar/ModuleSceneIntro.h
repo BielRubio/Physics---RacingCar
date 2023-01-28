@@ -6,6 +6,8 @@
 
 #define MAX_SNAKE 2
 
+#define IMMOVABLE 100000
+
 enum class CAM_VIEW{
 	BEHIND_PLAYER = 0,
 	LOCK_PLAYER,
@@ -66,8 +68,28 @@ public:
 	CAM_VIEW camView;
 
 	//Map
-
-	int baseH;
-
+	PhysBody3D* pb_ground;
 	Cube ground;
+
+	PhysBody3D* pb_road1;
+	Cube road1;
+	PhysBody3D* pb_road2;
+	Cube road2;
+	PhysBody3D* pb_road3;
+	Cube road3;
+	PhysBody3D* pb_road4;
+	Cube road4;
+	PhysBody3D* pb_road5;
+	Cube road5;
+	PhysBody3D* pb_road6;
+	Cube road6;
+	PhysBody3D* pb_road7;
+	Cube road7;
+	PhysBody3D* pb_road8;
+	Cube road8;
+	PhysBody3D* pb_road9;
+	Cube road9;
+	PhysBody3D* pb_road10;
+	Cube road10;
+
 };

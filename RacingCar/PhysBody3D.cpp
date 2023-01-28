@@ -52,6 +52,11 @@ btVector3 PhysBody3D::GetLinearVelocity(){
 	returnV = body->getLinearVelocity();
 	return returnV;
 }
+
+void PhysBody3D::SetLinearVelocity(btVector3 lv) {
+	body->setLinearVelocity(lv);
+}
+
 void PhysBody3D::SetAsSensor(bool isSensor) {
 	if (this->isSensor != isSensor)
 	{
