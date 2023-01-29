@@ -200,7 +200,7 @@ update_status ModulePlayer::Update(float dt)
 				brake = BRAKE_POWER;
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
 				acceleration = MAX_ACCELERATION * 5;
 			}
 			//Apply friction (in case no acceleration or in case it goes too quick, the vehicle starts loosing speed)

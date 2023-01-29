@@ -171,7 +171,7 @@ bool ModuleSceneIntro::Start()
 	barrier1 = Cube(20, 4, 1);
 	barrier1.SetPos(-180 - 105, 2, -150);
 	barrier1.color = Red;
-	pb_barrier1 = App->physics->AddBody(barrier1, 0.5);
+	pb_barrier1 = App->physics->AddBody(barrier1, 10);
 
 	hinge = Cube(20, 1, 1);
 	hinge.SetPos(-180 - 105, 4.5, -150);
@@ -273,8 +273,8 @@ update_status ModuleSceneIntro::Update(float dt)
 		break;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_STATE::KEY_DOWN) state = GAMESTATE::GAMEPLAY;
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+	if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_STATE::KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_STATE::KEY_DOWN) && state == (GAMESTATE)0) state = GAMESTATE::GAMEPLAY;
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) {
 		Reset();
 	}
 	//Auto win
@@ -283,7 +283,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		state = GAMESTATE::END;
 		currentLap = LAPS::LAST;
 	}
-	//Auto loose
+	//Auto lose
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
 		race = RACESTATE::LOSE;
 		state = GAMESTATE::END;
@@ -416,6 +416,7 @@ void ModuleSceneIntro::Reset() {
 	App->player->loseCondition = 20;
 
 	App->player->lastCheckPoint = 0;
+	App->player->currentTime = 0;
 	App->player->Respawn();
 }
 
