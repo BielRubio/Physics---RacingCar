@@ -37,10 +37,10 @@ This project is an assigment for the 2022-2023 Physics II class 2nd grade in CIT
 - F3: Respawn at last checkpoint
 - F4: Auto win
 - F5: Auto lose
-- F6 + [+ key]: Add gravity
-- F6 + [- key]: Subtract gravity
-- F7 + [+ key]: Add vehicle mass
-- F7 + [- key]: Subtract vehicle mass
+- F6: Add gravity
+- F7: Subtract gravity
+- F8:Add vehicle mass
+- F9: Subtract vehicle mass
 
 ## NOTES
 - There's a working hinge right next to the big magenta cylinder, but we haven't figured out how to update the render. You can see it wotking with debug draw (if you dont ram it off).
