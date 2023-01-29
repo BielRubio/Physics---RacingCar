@@ -271,6 +271,17 @@ update_status ModuleSceneIntro::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
 		Reset();
 	}
+	//Auto win
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+		race = RACESTATE::WIN;
+		state = GAMESTATE::END;
+		currentLap = LAPS::LAST;
+	}
+	//Auto loose
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
+		race = RACESTATE::LOSE;
+		state = GAMESTATE::END;
+	}
 	//Render map
 
 	//Road

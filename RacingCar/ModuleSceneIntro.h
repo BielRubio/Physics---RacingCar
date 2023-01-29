@@ -15,7 +15,7 @@ enum class CAM_VIEW{
 };
 
 enum class LAPS {
-	START = -1,
+	START = 0,
 	FIRST,
 	SECOND,
 	LAST,
