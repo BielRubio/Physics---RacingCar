@@ -167,6 +167,11 @@ bool ModuleSceneIntro::Start()
 	roundab1.color = Magenta;
 	pb_roundab1 = App->physics->AddBody(roundab1, 0);
 
+	barrier1 = Cube(20, 8, 5);
+	barrier1.SetPos(-180 - 105, 0, -150);
+	barrier1.color = Magenta;
+	pb_barrier1 = App->physics->AddBody(barrier1, 0);
+
 	road25 = Cube(20, 0.2, 120);
 	road25.SetPos(-210 - 75, 0, -250);
 	road25.color = { 0.5f,0.5f,0.5f };
@@ -233,7 +238,7 @@ bool ModuleSceneIntro::Start()
 	//AddCheckPoint({ 25, 0, 200 }, 0, 30, Red, 3, false); // meta
 	//AddCheckPoint({ -175, 0, 375 }, 180, 20, Red, 4, false); // meta
 	//AddCheckPoint({ -300, 0, 300 }, -45, 20, Red, 5, false); // meta
-	AddCheckPoint({ 0, 0, -20 }, 90, 20, White, 7, false);//Goal
+	AddCheckPoint({ 0, 0, 0 }, 90, 20, White, 7, true);//Goal
 
 	timer.Start();
 
@@ -301,6 +306,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	road23.Render();
 	road24.Render();
 	roundab1.Render();
+	barrier1.Render();
 	road25.Render();
 	road26.Render();
 	road27.Render();
@@ -337,7 +343,7 @@ void ModuleSceneIntro::AddCheckPoint(vec3 position, float angle, float width, Co
 	//Sensor
 	Cube sensor;
 	sensor.size = { 2,2,width };
-	sensor.SetPos(position.x, position.y, position.z);
+	sensor.SetPos(position.x, position.y + 1, position.z);
 	sensor.SetRotation(angle, { 0, 1, 0 });
 
 	float radius = width / 2;
