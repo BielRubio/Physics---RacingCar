@@ -2,7 +2,7 @@
 This project is an assigment for the 2022-2023 Physics II class 2nd grade in CITM
 
 ## GAME
-- Steer the car and dodge the obstacles as well as you can in order to complete the race and set the best time.
+- Steer the car and dodge the obstacles as well as you can in order to complete the race before the time runs out.
 
 ## CONTROLS
 
