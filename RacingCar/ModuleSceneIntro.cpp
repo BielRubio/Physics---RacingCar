@@ -34,14 +34,17 @@ bool ModuleSceneIntro::Start()
 
 	road1 = Cube(20, 0.2, 300); //10,150
 	road1.SetPos(0, 0, 0);
-	road1.color = {0.5f,0.5f,0.5f };
+	road1.color = { 0.5,1,1 };
 	pb_road1 = App->physics->AddBody(road1, 0);
+	
+	
 
 	road2 = Cube(50, 0.2, 50);
 	road2.SetPos(-25 + 10, 0, 150+25); //-15,175
 	road2.color = { 0.5f,0.5f,0.5f };
 	pb_road2 = App->physics->AddBody(road2, 0);
 	AddCheckPoint({ 0, 0, 150 }, 90, 20, {0.5,1,1}, 3, false);
+	
 
 	road3 = Cube(100, 0.2, 20);
 	road3.SetPos(-15 - 75, 0, 175 + 15); // -125, 210
@@ -134,33 +137,39 @@ bool ModuleSceneIntro::Start()
 
 	road19 = Cube(40, 0.2, 20);
 	road19.SetPos(-280 - 75, 0, -20);
-	road19.color = { 0.5f,0.5f,0.5f };
+	road19.color = { 0.3,1,1 };
 	pb_road19 = App->physics->AddBody(road19, 0);
+	pb_road19->body->setFriction(0.2);
 
 	road20 = Cube(40, 0.2, 20);
 	road20.SetPos(-260 - 75, 0, -40);
-	road20.color = { 0.5f,0.5f,0.5f };
+	road20.color = { 0.3,1,1 };
 	pb_road20 = App->physics->AddBody(road20, 0);
+	pb_road20->body->setFriction(0.2);
 
 	road21 = Cube(40, 0.2, 20);
 	road21.SetPos(-240 - 75, 0, -60);
-	road21.color = { 0.5f,0.5f,0.5f };
+	road21.color = { 0.3,1,1 };
 	pb_road21 = App->physics->AddBody(road21, 0);
+	pb_road21->body->setFriction(0.2);
 
 	road22 = Cube(40, 0.2, 20);
 	road22.SetPos(-220 - 75, 0, -80);
-	road22.color = { 0.5f,0.5f,0.5f };
+	road22.color = { 0.3,1,1 };
 	pb_road22 = App->physics->AddBody(road22, 0);
+	pb_road22->body->setFriction(0.2);
 
 	road23 = Cube(40, 0.2, 20);
 	road23.SetPos(-200 - 75, 0, -100);
-	road23.color = { 0.5f,0.5f,0.5f };
+	road23.color = { 0.3,1,1 };
 	pb_road23 = App->physics->AddBody(road23, 0);
+	pb_road23->body->setFriction(0.2);
 
 	road24 = Cube(80, 0.2, 80);
 	road24.SetPos(-180 - 75, 0, -150);
-	road24.color = { 0.5f,0.5f,0.5f };
+	road24.color = { 0.3,1,1 };
 	pb_road24 = App->physics->AddBody(road24, 0);
+	pb_road24->body->setFriction(0.2);
 
 	roundab1 = Cylinder(20,30);
 	roundab1.SetPos(-180 - 75, 0, -150);
