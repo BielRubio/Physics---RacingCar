@@ -287,13 +287,13 @@ update_status ModuleSceneIntro::Update(float dt)
 		Reset();
 	}
 	//Auto win
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN) {
 		race = RACESTATE::WIN;
 		state = GAMESTATE::END;
 		currentLap = LAPS::LAST;
 	}
 	//Auto lose
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN) {
 		race = RACESTATE::LOSE;
 		state = GAMESTATE::END;
 	}

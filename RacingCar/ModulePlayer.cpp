@@ -144,12 +144,28 @@ update_status ModulePlayer::Update(float dt)
 		else {
 			App->scene_intro->currentLap = LAPS::FIRST;
 		}		
+
 		if (App->scene_intro->currentLap != LAPS::START) {
 			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && vehicle->GetKmh() <= 200)
 			{
 				acceleration = MAX_ACCELERATION;
 			}
 			App->physics->DragForce(vehicle, 25);
+			if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+				if (App->physics->GetGravity().getY() <= 100)
+					App->physics->SetGravity({ 0,(App->physics->GetGravity().getY() + 5),0 });
+			}
+			if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN) {
+				if (App->physics->GetGravity().getY() >= -100)
+					App->physics->SetGravity({ 0,(App->physics->GetGravity().getY() - 5),0 });
+			}
+
+			if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN) {
+				vehicle->info.mass += 50;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) {
+				vehicle->info.mass -= 50;
+			}
 
 			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 			{
@@ -201,7 +217,7 @@ update_status ModulePlayer::Update(float dt)
 			}
 
 			if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) {
-				acceleration = MAX_ACCELERATION * 5;
+				acceleration = MAX_ACCELERATION * 3;
 			}
 			//Apply friction (in case no acceleration or in case it goes too quick, the vehicle starts loosing speed)
 
@@ -259,7 +275,7 @@ update_status ModulePlayer::Update(float dt)
 		else {
 			int cLap = (int)App->scene_intro->currentLap;
 			if (cLap == -1) cLap = 0;
-			sprintf_s(title, "Speed: %.1f Km/h | Lap: %i/3 | Last lap time: %.2f | Remaining time: %.2f| Press F3 to Respawn", vehicle->GetKmh(), cLap, currentTime, loseCondition);
+			sprintf_s(title, "Speed: %.1f Km/h | Lap: %i/3 | Last lap time: %.2f | Remaining time: %.2f| Press F3 to Respawn | Gravity: %.2f | Mass: %.2f", vehicle->GetKmh(), cLap, currentTime, loseCondition, App->physics->GetGravity().getY(), vehicle->info.mass);
 			if (App->scene_intro->currentLap == LAPS::LAST) {
 				if (App->scene_intro->race == RACESTATE::WIN) {
 					sprintf_s(title, "Speed: %.1f Km/h | Lap: %i/3 | Last lap time: | YOU WIN", vehicle->GetKmh(), cLap);

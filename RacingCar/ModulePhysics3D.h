@@ -37,7 +37,7 @@ public:
 	
 	void SetGravity(vec3 g);
 	vec3 DragForce(PhysBody3D* body, float density);
-	vec3 LiftForce(PhysBody3D* body, float density);
+	btVector3 GetGravity();
 
 
 private:

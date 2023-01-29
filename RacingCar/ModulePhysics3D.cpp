@@ -72,6 +72,9 @@ bool ModulePhysics3D::Start()
 void ModulePhysics3D::SetGravity(vec3 g) {
 	world->setGravity({ g.x, g.y, g.z });
 }
+btVector3 ModulePhysics3D::GetGravity() {
+	return world->getGravity();
+}
 // ---------------------------------------------------------
 update_status ModulePhysics3D::PreUpdate(float dt)
 {
@@ -362,10 +365,6 @@ vec3 ModulePhysics3D::DragForce(PhysBody3D* body, float density) {
 
 	vec3 forceDrag = { -dragModule * body->GetLinearVelocity().getX(), -dragModule * body->GetLinearVelocity().getY(),-dragModule * body->GetLinearVelocity().getZ() };
 	return forceDrag;
-}
-
-vec3 ModulePhysics3D::LiftForce(PhysBody3D* body, float density) {
-	return 0;
 }
 
 // =============================================
