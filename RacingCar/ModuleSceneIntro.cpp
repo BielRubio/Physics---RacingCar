@@ -335,8 +335,8 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 void ModuleSceneIntro::AddCheckPoint(vec3 position, float angle, float width, Color color, int id, bool startChecked) {
 	//Sensor
 	Cube sensor;
-	sensor.size = { 5,5,width };
-	sensor.SetPos(position.x, position.y + 3, position.z);
+	sensor.size = { 2,2,width };
+	sensor.SetPos(position.x, position.y, position.z);
 	sensor.SetRotation(angle, { 0, 1, 0 });
 
 	float radius = width / 2;
