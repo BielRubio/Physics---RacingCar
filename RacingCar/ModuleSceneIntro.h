@@ -168,5 +168,7 @@ public:
 
 	LAPS currentLap;
 
+	Timer timer;
+
 
 };

@@ -240,6 +240,7 @@ bool ModuleSceneIntro::Start()
 	//AddCheckPoint({ -300, 0, 300 }, -45, 20, Red, 5, false); // meta
 	AddCheckPoint({ 0, 0, 0 }, 90, 20, White, 7, true);//Goal
 
+	timer.Start();
 
 	return ret;
 }
@@ -335,7 +336,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
-	LOG("COLLIDE WITH CHECKPOINT");
+	
 }
 
 void ModuleSceneIntro::AddCheckPoint(vec3 position, float angle, float width, Color color, int id, bool startChecked) {
