@@ -313,6 +313,7 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 			case LAPS::FIRST:
 				App->scene_intro->currentLap = LAPS::SECOND;
 				LOG("second lap start");
+				
 				break;
 			case LAPS::SECOND:
 				App->scene_intro->currentLap = LAPS::LAST;
@@ -340,7 +341,7 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 							checklist->next->data.checked = false;
 						}
 						lastCheckPoint = body2->id;
-						loseCondition += 5;
+						loseCondition += 10;
 					}
 				}
 				
@@ -357,7 +358,7 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 						checklist->data.checked = true;
 						App->scene_intro->checkPoints.getFirst()->data.checked = false;
 						lastCheckPoint = body2->id;
-						loseCondition += 5;
+						loseCondition += 10;
 					}
 				}
 			}
