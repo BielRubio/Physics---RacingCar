@@ -39,7 +39,7 @@ This project is an assigment for the 2022-2023 Physics II class 2nd grade in CIT
 - F5: Auto lose
 - F6: Add gravity
 - F7: Subtract gravity
-- F8:Add vehicle mass
+- F8: Add vehicle mass
 - F9: Subtract vehicle mass
 
 ## NOTES
