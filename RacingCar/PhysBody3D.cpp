@@ -70,3 +70,9 @@ void PhysBody3D::SetAsSensor(bool isSensor) {
 void PhysBody3D::SetId(int id) {
 	this->id = id;
 }
+btVector3 PhysBody3D::GetPos() {
+
+	btVector3 a = body->getWorldTransform().getOrigin();
+
+	return a;
+}

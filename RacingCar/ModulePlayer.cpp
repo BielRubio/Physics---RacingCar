@@ -130,6 +130,9 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->SetTransform(aux);
 		vehicle->SetLinearVelocity({ 0,0,0 });
 	}
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+		Respawn();
+	}
 
 	turn = acceleration = brake = 0.0f;
 
@@ -177,6 +180,11 @@ update_status ModulePlayer::Update(float dt)
 				turn -= TURN_DEGREES;
 		}
 	}
+	//Go backwards
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && vehicle->GetKmh() >= -90)
+	{
+		acceleration = -MAX_ACCELERATION;
+	}
 
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
@@ -217,34 +225,88 @@ update_status ModulePlayer::Update(float dt)
 
 	return UPDATE_CONTINUE;
 }
+void ModulePlayer::Respawn() {
+	if (lastCheckPoint == 0) {
+		vehicle->SetPos(0, 0.3, 0);
+		vehicle->Rotate(90);
+		vehicle->SetLinearVelocity({ 0,0,0 });
+	}
+	else {
+		p2List_item<CheckPoint>* checklist = App->scene_intro->checkPoints.getFirst();
+		while (checklist != NULL) {
+			if (checklist->data.body->id == lastCheckPoint) {
+				vehicle->SetPos(checklist->data.body->GetPos().getX(), checklist->data.body->GetPos().getY(), checklist->data.body->GetPos().getZ());
+				vehicle->Rotate(checklist->data.angle);
+				vehicle->SetLinearVelocity({ 0, 0, 0 });
+			}
+			checklist = checklist->next;
+		}
+	}
+	
+}
 
 void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 	//Collide with the checkpoint added
 	if (body2->id == 2) {
 		if (App->scene_intro->checkPoints.getFirst()->data.checked == false) {
 			//Update of laps
-			LOG("COLLIDE WITH CHECKPOINT");
-		}
-		App->scene_intro->checkPoints.getFirst()->data.checked = true;
-		App->scene_intro->checkPoints.getFirst()->next->data.checked = false;
-		
-	}
-	else if (body2->id > 2 && body2->id < 5) {
-		p2List_item<CheckPoint>* checklist = App->scene_intro->checkPoints.getFirst();
-
-		while (checklist != NULL) {
-			if (checklist->data.body->id == body2->id) {
-				if (checklist->data.checked == false) {
-					checklist->data.checked = true;
-					checklist->next->data.checked = false;
-				}
+			switch (App->scene_intro->currentLap) {
+			case LAPS::START:
+				App->scene_intro->currentLap = LAPS::FIRST;
+				LOG("race start");
+				break;
+			case LAPS::FIRST:
+				App->scene_intro->currentLap = LAPS::SECOND;
+				LOG("second lap start");
+				break;
+			case LAPS::SECOND:
+				App->scene_intro->currentLap = LAPS::LAST;
+				LOG("third lap start");
+				break;
+			case LAPS::LAST:
+				App->scene_intro->race = RACESTATE::WIN;
+				break;
 			}
 		}
-		
-		checklist = checklist->next;
-		
+		App->scene_intro->checkPoints.getFirst()->data.checked = true;
+		if (App->scene_intro->checkPoints.getFirst()->next != NULL) {
+			App->scene_intro->checkPoints.getFirst()->next->data.checked = false;
+		}
+		lastCheckPoint = body2->id; 
 	}
-	LOG("COLLIDE WITH CHECKPOINT");
+	else if (body2->id > 2 && body2->id < lastCP) {
+		p2List_item<CheckPoint>* checklist = App->scene_intro->checkPoints.getFirst();
+		while (checklist != NULL) {
+			if (checklist->data.body->id == body2->id) {
+				if (lastCheckPoint == checklist->prev->data.body->id) {
+					if (checklist->data.checked == false) {
+						checklist->data.checked = true;
+						if (checklist->next != NULL) {
+							checklist->next->data.checked = false;
+						}
+						lastCheckPoint = body2->id;
+					}
+				}
+				
+			}
+			checklist = checklist->next;
+		}	
+	}
+	else if (body2->id == lastCP) {
+		p2List_item<CheckPoint>* checklist = App->scene_intro->checkPoints.getFirst();
+		while (checklist != NULL) {
+			if (checklist->data.body->id == body2->id) {
+				if (lastCheckPoint == checklist->prev->data.body->id) {
+					if (checklist->data.checked == false) {
+						checklist->data.checked = true;
+						App->scene_intro->checkPoints.getFirst()->data.checked = false;
+						lastCheckPoint = body2->id;
+					}
+				}
+			}
+			checklist = checklist->next;
+		}
+	}
 }
 
 

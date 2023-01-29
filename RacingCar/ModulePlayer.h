@@ -20,6 +20,7 @@ public:
 	bool CleanUp();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
+	void Respawn();
 
 public:
 
@@ -30,4 +31,7 @@ public:
 
 	vec3 pos;
 	vec3 fwVec;
+
+	int lastCheckPoint = 0;
+	int lastCP = 7;
 };

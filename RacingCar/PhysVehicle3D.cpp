@@ -93,3 +93,23 @@ float PhysVehicle3D::GetKmh() const
 {
 	return vehicle->getCurrentSpeedKmHour();
 }
+
+void PhysVehicle3D::Rotate(float angle) {
+	float aux[16];
+	memset(aux, 0.0f, sizeof(aux));
+	vec3 position = { GetPos().getX(), GetPos().getY(), GetPos().getZ() };
+	aux[12] = position.x;
+	aux[13] = position.y;
+	aux[14] = position.z;
+	aux[15] = 1;
+
+	//Rotate the matrix 
+	angle -= 90;
+	float theta = angle * M_PI / 180;
+	aux[0] = cos(theta);
+	aux[2] = sin(theta);
+	aux[5] = 1;
+	aux[8] = -sin(theta);
+	aux[10] = cos(theta);
+	SetTransform(aux);
+}
