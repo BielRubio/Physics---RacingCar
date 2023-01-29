@@ -144,6 +144,8 @@ public:
 	Cylinder roundab1;
 	PhysBody3D* pb_barrier1;
 	Cube barrier1;
+	PhysBody3D* pb_hinge;
+	Cube hinge;
 	//vvv
 	PhysBody3D* pb_road25;
 	Cube road25;

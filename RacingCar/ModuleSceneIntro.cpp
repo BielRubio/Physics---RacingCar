@@ -168,10 +168,17 @@ bool ModuleSceneIntro::Start()
 	roundab1.color = Magenta;
 	pb_roundab1 = App->physics->AddBody(roundab1, 0);
 
-	barrier1 = Cube(20, 8, 5);
-	barrier1.SetPos(-180 - 105, 0, -150);
-	barrier1.color = Magenta;
-	pb_barrier1 = App->physics->AddBody(barrier1, 0);
+	barrier1 = Cube(20, 4, 1);
+	barrier1.SetPos(-180 - 105, 2, -150);
+	barrier1.color = Red;
+	pb_barrier1 = App->physics->AddBody(barrier1, 0.5);
+
+	hinge = Cube(20, 1, 1);
+	hinge.SetPos(-180 - 105, 4.5, -150);
+	hinge.color = Magenta;
+	pb_hinge = App->physics->AddBody(hinge, 0);
+
+	//App->physics->AddConstraintHinge(*pb_barrier1, *pb_hinge, { -180 - 95, 4.5, -150 }, { -180 - 115, 4.5, -150 }, { 1,0,0 }, {1,0,0},false);
 
 	road25 = Cube(20, 0.2, 120);
 	road25.SetPos(-210 - 75, 0, -250);
@@ -233,7 +240,6 @@ bool ModuleSceneIntro::Start()
 	flag.SetPos(0,15,0);
 	flag.color = White;
 	pb_flag = App->physics->AddBody(flag, 0);
-
 
 	timer.Start();
 
@@ -312,6 +318,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	road24.Render();
 	roundab1.Render();
 	barrier1.Render();
+	hinge.Render();
 	road25.Render();
 	road26.Render();
 	road27.Render();
