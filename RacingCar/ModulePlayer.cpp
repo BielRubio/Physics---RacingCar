@@ -180,6 +180,11 @@ update_status ModulePlayer::Update(float dt)
 				turn -= TURN_DEGREES;
 		}
 	}
+	//Go backwards
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && vehicle->GetKmh() >= -90)
+	{
+		acceleration = -MAX_ACCELERATION;
+	}
 
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
