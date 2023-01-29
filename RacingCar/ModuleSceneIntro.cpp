@@ -27,10 +27,10 @@ bool ModuleSceneIntro::Start()
 	//Initialize map
 	AddCheckPoint({ 0, 0, 0 }, 90, 20, White, 2, false);//Goal
 	//road
-	ground = Cube(2000, 0, 2000);
-	ground.SetPos(0, 0, 0);
-	ground.color = Green;
-	pb_ground = App->physics->AddBody(ground, 0);
+	deathZone = Cube(2000, 25, 2000);
+	deathZone.SetPos(0, -50, 0);
+	pb_deathZone = App->physics->AddBody(deathZone, 0);
+	pb_deathZone->SetId(-1);
 
 	road1 = Cube(20, 0.2, 300); //10,150
 	road1.SetPos(0, 0, 0);
@@ -41,7 +41,7 @@ bool ModuleSceneIntro::Start()
 	road2.SetPos(-25 + 10, 0, 150+25); //-15,175
 	road2.color = { 0.5f,0.5f,0.5f };
 	pb_road2 = App->physics->AddBody(road2, 0);
-	AddCheckPoint({ 0, 0, 150 }, 90, 20, White, 3, false);
+	AddCheckPoint({ 0, 0, 150 }, 90, 20, {0.5,1,1}, 2, false);
 
 	road3 = Cube(100, 0.2, 20);
 	road3.SetPos(-15 - 75, 0, 175 + 15); // -125, 210
@@ -57,7 +57,7 @@ bool ModuleSceneIntro::Start()
 	road5.SetPos(-180, 0, 230 + 25); // -170,255
 	road5.color = { 0.5f,0.5f,0.5f };
 	pb_road5 = App->physics->AddBody(road5, 0);
-	AddCheckPoint({ -180, 0, 230 }, 90, 20, White, 4, false);
+	AddCheckPoint({ -180, 0, 230 }, 90, 20, { 0.5,1,1 }, 3, false);
 
 	road6 = Cube(20, 0.2, 100);
 	road6.SetPos(-180, 5.3, 255+50.6);
@@ -94,7 +94,7 @@ bool ModuleSceneIntro::Start()
 	road11.SetPos(-290 - 75, 14, 445 - 15);
 	road11.color = { 0.5f,0.5f,0.5f };
 	pb_road11 = App->physics->AddBody(road11, 0);
-	AddCheckPoint({ -290, 14, 445 }, 180, 20, White, 5, false);
+	AddCheckPoint({ -290, 14, 445 }, 180, 20, { 0.5,1,1 }, 4, false);
 
 	road12 = Cube(10, 0.2, 50);
 	road12.SetPos(-390 + 5, 14, 445 - 40 - 25);
@@ -120,7 +120,7 @@ bool ModuleSceneIntro::Start()
 	road16.SetPos(-290 - 75, 14, 230 - 35);
 	road16.color = { 0.5f,0.5f,0.5f };
 	pb_road16 = App->physics->AddBody(road16, 0);
-	AddCheckPoint({ -365, 14, 230 }, 270, 20, White, 6, false);
+	AddCheckPoint({ -365, 14, 230 }, 270, 20, { 0.5,1,1 }, 5, false);
 
 	road17 = Cube(70, 0.2, 120);
 	road17.SetPos(-290 - 75, 0, 120);
@@ -177,7 +177,7 @@ bool ModuleSceneIntro::Start()
 	road25.SetPos(-210 - 75, 0, -250);
 	road25.color = { 0.5f,0.5f,0.5f };
 	pb_road25 = App->physics->AddBody(road25, 0);
-	AddCheckPoint({ -285, 0, -250 }, 270, 20, White, 7, false);
+	AddCheckPoint({ -285, 0, -250 }, 270, 20, { 0.5,1,1 }, 6, false);
 
 	road26 = Cube(60, 0.2, 20);
 	road26.SetPos(-170 - 95, 0, -320);
@@ -273,8 +273,6 @@ update_status ModuleSceneIntro::Update(float dt)
 	}
 	//Render map
 
-	ground.Render();
-
 	//Road
 	road1.Render();
 	road2.Render();
@@ -349,37 +347,37 @@ void ModuleSceneIntro::AddCheckPoint(vec3 position, float angle, float width, Co
 	positionLeftFlag.x += radius * sin(theta); positionLeftFlag.z = positionLeftFlag.z * cos(theta);
 	positionRightFlag.x -= radius * sin(theta); positionRightFlag.z = positionRightFlag.z * cos(theta);
 
-	// Sensor left mark
-	Cylinder leftFlag;
-	leftFlag.radius = 2;
-	leftFlag.height = 5;
-	leftFlag.color = color;
-	leftFlag.SetPos(positionLeftFlag.x + position.x, positionLeftFlag.y - 1, positionLeftFlag.z + position.z);
-	leftFlag.SetRotation(90, { 0, 0, 1 });
+	//// Sensor left mark
+	//Cylinder leftFlag;
+	//leftFlag.radius = 2;
+	//leftFlag.height = 5;
+	//leftFlag.color = color;
+	//leftFlag.SetPos(positionLeftFlag.x + position.x, positionLeftFlag.y - 1, positionLeftFlag.z + position.z);
+	//leftFlag.SetRotation(90, { 0, 0, 1 });
 
-	// Sensor right mark
-	Cylinder rightFlag;
-	rightFlag.radius = 2;
-	rightFlag.height = 5;
-	rightFlag.color = color;
-	rightFlag.SetPos(positionRightFlag.x + position.x, positionRightFlag.y - 1, positionRightFlag.z + position.z);
-	rightFlag.SetRotation(90, { 0, 0, 1 });
-	// Create Checkpoint
+	//// Sensor right mark
+	//Cylinder rightFlag;
+	//rightFlag.radius = 2;
+	//rightFlag.height = 5;
+	//rightFlag.color = color;
+	//rightFlag.SetPos(positionRightFlag.x + position.x, positionRightFlag.y - 1, positionRightFlag.z + position.z);
+	//rightFlag.SetRotation(90, { 0, 0, 1 });
+	//// Create Checkpoint
 	CheckPoint sensorCP;
 	sensorCP.body = App->physics->AddBody(sensor, 0.0f);
 	sensorCP.body->SetAsSensor(true);
 	sensorCP.body->SetId(id);
 	sensorCP.angle = angle;
 	sensorCP.checked = startChecked;
-	sensorCP.leftC = leftFlag;
-	sensorCP.rightC = rightFlag;
+	/*sensorCP.leftC = leftFlag;
+	sensorCP.rightC = rightFlag;*/
 	sensorCP.colorBody = sensor;
 	sensorCP.colorBody.color = color;
 
-	Cylinders.add(sensorCP.leftC);
+	/*Cylinders.add(sensorCP.leftC);
 	App->physics->AddBody(sensorCP.leftC, 0);
 	Cylinders.add(sensorCP.rightC);
-	App->physics->AddBody(sensorCP.rightC, 0);
+	App->physics->AddBody(sensorCP.rightC, 0);*/
 
 	checkPoints.add(sensorCP);
 }

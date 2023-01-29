@@ -364,6 +364,9 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 			checklist = checklist->next;
 		}
 	}
+	else if (body2->id == -1) {
+		Respawn();
+	}
 }
 
 

@@ -83,8 +83,8 @@ public:
 	CAM_VIEW camView;
 
 	//MAP
-	PhysBody3D* pb_ground;
-	Cube ground;
+	PhysBody3D* pb_deathZone;
+	Cube deathZone;
 
 	//road
 	PhysBody3D* pb_road1;
