@@ -130,6 +130,9 @@ update_status ModulePlayer::Update(float dt)
 		vehicle->SetTransform(aux);
 		vehicle->SetLinearVelocity({ 0,0,0 });
 	}
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+		Respawn();
+	}
 
 	turn = acceleration = brake = 0.0f;
 
@@ -217,6 +220,25 @@ update_status ModulePlayer::Update(float dt)
 
 	return UPDATE_CONTINUE;
 }
+void ModulePlayer::Respawn() {
+	if (lastCheckPoint == 0) {
+		vehicle->SetPos(0, 0.3, 0);
+		vehicle->Rotate(90);
+		vehicle->SetLinearVelocity({ 0,0,0 });
+	}
+	else {
+		p2List_item<CheckPoint>* checklist = App->scene_intro->checkPoints.getFirst();
+		while (checklist != NULL) {
+			if (checklist->data.body->id == lastCheckPoint) {
+				vehicle->SetPos(checklist->data.body->GetPos().getX(), checklist->data.body->GetPos().getY(), checklist->data.body->GetPos().getZ());
+				vehicle->Rotate(checklist->data.angle);
+				vehicle->SetLinearVelocity({ 0, 0, 0 });
+			}
+			checklist = checklist->next;
+		}
+	}
+	
+}
 
 void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 	//Collide with the checkpoint added
@@ -226,7 +248,12 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 			LOG("COLLIDE WITH CHECKPOINT");
 		}
 		App->scene_intro->checkPoints.getFirst()->data.checked = true;
-		App->scene_intro->checkPoints.getFirst()->next->data.checked = false;
+		if (App->scene_intro->checkPoints.getFirst()->next != NULL) {
+			App->scene_intro->checkPoints.getFirst()->next->data.checked = false;
+		}
+		
+
+		lastCheckPoint = body2->id; 
 		
 	}
 	else if (body2->id > 2 && body2->id < 5) {
@@ -236,13 +263,15 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 			if (checklist->data.body->id == body2->id) {
 				if (checklist->data.checked == false) {
 					checklist->data.checked = true;
-					checklist->next->data.checked = false;
+					if (checklist->next != NULL) {
+						checklist->next->data.checked = false;
+					}
+					lastCheckPoint = body2->id;
 				}
 			}
+			checklist = checklist->next;
 		}
-		
-		checklist = checklist->next;
-		
+				
 	}
 	LOG("COLLIDE WITH CHECKPOINT");
 }

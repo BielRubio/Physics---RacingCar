@@ -202,8 +202,8 @@ bool ModuleSceneIntro::Start()
 	road32.color = { 0.5f,0.5f,0.5f };
 	pb_road32 = App->physics->AddBody(road32, 0);
 
-	//AddCheckPoint({ 0, 0, 100 }, 90, 20, White, 2, false); // meta
-	//AddCheckPoint({ 25, 0, 200 }, 0, 30, Red, 3, false); // meta
+	AddCheckPoint({ 0, 0, 100 }, 90, 20, White, 2, false); // meta
+	AddCheckPoint({ 25, 0, 200 }, 180, 30, Red, 3, false); // meta
 	//AddCheckPoint({ -175, 0, 375 }, 180, 20, Red, 4, false); // meta
 	//AddCheckPoint({ -300, 0, 300 }, -45, 20, Red, 5, false); // meta
 
