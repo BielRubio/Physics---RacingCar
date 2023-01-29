@@ -6,20 +6,38 @@ This project is an assigment for the 2022-2023 Physics II class 2nd grade in CIT
 
 ## CONTROLS
 
+#Movement
 - A: Steer left
 - D: Steer right
 - W: Accelerate car
-- Left Shift/S: Break
+- S: Backwards
+- Left Shift: Break
 - Space Bar: Turbo
 
+#Camera
+- 1: Lock behind player
+- 2: Look at player
+- 3: Free cam
+- Up Key: Mov cam forwards
+- Down Key: Mov cam backwards
+- Left Key: Mov cam left
+- Right Key: Mov cam right
+- R: Move cam up
+- L: Move cam down
+- Right click button: Pan camera around
+
 ## MECHANICS
-- Set record Lap and Finish times.
-- Complete 3 Laps in order to win.
+- Set record Finish times
+- Complete 3 Laps before the time expires in order to win
+- Every checkpoint adds 10s to Remaining time
 
 ## DEBUG KEYS
 - F1: Toogle debug draw
 - F2: Reset race
 - F3: Respawn at last checkpoint
+
+## NOTES
+- There's a working hinge right next to the big magenta cylinder, but we haven't figured out how to update the render. You can see it wotking with debug draw (if you dont ram it off).
 
 ## Developers
 - Nacho Moreno 

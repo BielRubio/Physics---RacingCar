@@ -171,14 +171,19 @@ bool ModuleSceneIntro::Start()
 	barrier1 = Cube(20, 4, 1);
 	barrier1.SetPos(-180 - 105, 2, -150);
 	barrier1.color = Red;
-	pb_barrier1 = App->physics->AddBody(barrier1, 10);
+	pb_barrier1 = App->physics->AddBody(barrier1, 5);
 
 	hinge = Cube(20, 1, 1);
 	hinge.SetPos(-180 - 105, 4.5, -150);
 	hinge.color = Magenta;
 	pb_hinge = App->physics->AddBody(hinge, 0);
 
-	//App->physics->AddConstraintHinge(*pb_barrier1, *pb_hinge, { -180 - 95, 4.5, -150 }, { -180 - 115, 4.5, -150 }, { 1,0,0 }, {1,0,0},false);
+	App->physics->AddConstraintHinge(*pb_barrier1, *pb_hinge, { -180 - 105, 4.5, -150 }, { -180 - 105, 4.5, -150 }, { 1,0,0 }, {1,0,0},true);
+
+	/*float aux[16];
+	pb_barrier1->GetTransform(aux);
+	barrier1.SetPos(pb_barrier1->GetPos().getX(), pb_barrier1->GetPos().getY(), pb_barrier1->GetPos().getZ());
+	barrier1.SetRotation(acos(aux[5]),{1,0,0});*/
 
 	road25 = Cube(20, 0.2, 120);
 	road25.SetPos(-210 - 75, 0, -250);
