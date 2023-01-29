@@ -167,6 +167,11 @@ bool ModuleSceneIntro::Start()
 	roundab1.color = Magenta;
 	pb_roundab1 = App->physics->AddBody(roundab1, 0);
 
+	barrier1 = Cube(20, 8, 5);
+	barrier1.SetPos(-180 - 105, 0, -150);
+	barrier1.color = Magenta;
+	pb_barrier1 = App->physics->AddBody(barrier1, 0);
+
 	road25 = Cube(20, 0.2, 120);
 	road25.SetPos(-210 - 75, 0, -250);
 	road25.color = { 0.5f,0.5f,0.5f };
@@ -300,6 +305,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	road23.Render();
 	road24.Render();
 	roundab1.Render();
+	barrier1.Render();
 	road25.Render();
 	road26.Render();
 	road27.Render();

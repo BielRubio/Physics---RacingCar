@@ -15,10 +15,11 @@ enum class CAM_VIEW{
 };
 
 enum class LAPS {
-	START,
+	START = -1,
 	FIRST,
 	SECOND,
-	LAST
+	LAST,
+	COMPLETE
 };
 
 enum class RACESTATE {
@@ -133,6 +134,8 @@ public:
 	//^^^
 	PhysBody3D* pb_roundab1;
 	Cylinder roundab1;
+	PhysBody3D* pb_barrier1;
+	Cube barrier1;
 	//vvv
 	PhysBody3D* pb_road25;
 	Cube road25;
