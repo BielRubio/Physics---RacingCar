@@ -278,11 +278,11 @@ update_status ModulePlayer::Update(float dt)
 			sprintf_s(title, "Speed: %.1f Km/h | Lap: %i/3 | Last lap time: %.2f | Remaining time: %.2f| Press F3 to Respawn | Gravity: %.2f | Mass: %.2f", vehicle->GetKmh(), cLap, currentTime, loseCondition, App->physics->GetGravity().getY(), vehicle->info.mass);
 			if (App->scene_intro->currentLap == LAPS::LAST) {
 				if (App->scene_intro->race == RACESTATE::WIN) {
-					sprintf_s(title, "Speed: %.1f Km/h | Lap: %i/3 | Last lap time: | YOU WIN", vehicle->GetKmh(), cLap);
+					sprintf_s(title, "Speed: %.1f Km/h | Lap: %i/3 | Track time: | YOU WIN", vehicle->GetKmh(), cLap);
 				}
 			}
 			if (App->scene_intro->race == RACESTATE::LOSE) {
-				sprintf_s(title, "Speed: %.1f Km/h | Lap: %i/3 | Last lap time: | YOU LOSE", vehicle->GetKmh(), cLap);
+				sprintf_s(title, "Speed: %.1f Km/h | Lap: %i/3 | Track time: | YOU LOSE", vehicle->GetKmh(), cLap);
 			}
 		}
 	}
