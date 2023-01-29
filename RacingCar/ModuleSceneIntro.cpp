@@ -23,6 +23,7 @@ bool ModuleSceneIntro::Start()
 
 	//Initialize map
 
+	//road
 	ground = Cube(2000, 0, 2000);
 	ground.SetPos(0, 0, 0);
 	ground.color = Green;
@@ -202,6 +203,25 @@ bool ModuleSceneIntro::Start()
 	road32.color = { 0.5f,0.5f,0.5f };
 	pb_road32 = App->physics->AddBody(road32, 0);
 
+	//Finish
+	fpoleL = Cylinder(0.3, 20);
+	fpoleL.SetPos(10, 10, 0);
+	fpoleL.SetRotation(90, { 0,0,1 });
+	fpoleL.color = Black;
+	pb_fpoleL = App->physics->AddBody(fpoleL, 0);
+
+	fpoleR = Cylinder(0.3, 20);
+	fpoleR.SetPos(-10, 10, 0);
+	fpoleR.SetRotation(90, { 0,0,1 });
+	fpoleR.color = Black;
+	pb_fpoleR = App->physics->AddBody(fpoleR, 0);
+
+	flag = Cube(20, 6, 0.3);
+	flag.SetPos(0,15,0);
+	flag.color = White;
+	pb_flag = App->physics->AddBody(flag, 0);
+
+	
 	//AddCheckPoint({ 0, 0, 100 }, 90, 20, White, 2, false); // meta
 	//AddCheckPoint({ 25, 0, 200 }, 0, 30, Red, 3, false); // meta
 	//AddCheckPoint({ -175, 0, 375 }, 180, 20, Red, 4, false); // meta
@@ -245,6 +265,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	//Render map
 
 	ground.Render();
+
+	//Road
 	road1.Render();
 	road2.Render();
 	road3.Render();
@@ -279,6 +301,11 @@ update_status ModuleSceneIntro::Update(float dt)
 	road30.Render();
 	road31.Render();
 	road32.Render();
+
+	//Finish
+	fpoleL.Render();
+	fpoleR.Render();
+	flag.Render();
 
 
 

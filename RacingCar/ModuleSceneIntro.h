@@ -67,10 +67,11 @@ public:
 
 	CAM_VIEW camView;
 
-	//Map
+	//MAP
 	PhysBody3D* pb_ground;
 	Cube ground;
 
+	//road
 	PhysBody3D* pb_road1;
 	Cube road1;
 	PhysBody3D* pb_road2;
@@ -143,5 +144,15 @@ public:
 	Cube road31;
 	PhysBody3D* pb_road32;
 	Cube road32;
+
+	//Finish
+	PhysBody3D* pb_fpoleL;
+	Cylinder fpoleL;
+	PhysBody3D* pb_fpoleR;
+	Cylinder fpoleR;
+
+	PhysBody3D* pb_flag;
+	Cube flag;
+
 
 };
