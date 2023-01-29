@@ -33,4 +33,5 @@ public:
 	vec3 fwVec;
 
 	int lastCheckPoint = 0;
+	int lastCP = 7;
 };

@@ -245,35 +245,63 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 	if (body2->id == 2) {
 		if (App->scene_intro->checkPoints.getFirst()->data.checked == false) {
 			//Update of laps
-			LOG("COLLIDE WITH CHECKPOINT");
+			switch (App->scene_intro->currentLap) {
+			case LAPS::START:
+				App->scene_intro->currentLap = LAPS::FIRST;
+				LOG("race start");
+				break;
+			case LAPS::FIRST:
+				App->scene_intro->currentLap = LAPS::SECOND;
+				LOG("second lap start");
+				break;
+			case LAPS::SECOND:
+				App->scene_intro->currentLap = LAPS::LAST;
+				LOG("third lap start");
+				break;
+			case LAPS::LAST:
+				App->scene_intro->race = RACESTATE::WIN;
+				break;
+			}
 		}
 		App->scene_intro->checkPoints.getFirst()->data.checked = true;
 		if (App->scene_intro->checkPoints.getFirst()->next != NULL) {
 			App->scene_intro->checkPoints.getFirst()->next->data.checked = false;
 		}
-		
-
 		lastCheckPoint = body2->id; 
-		
 	}
-	else if (body2->id > 2 && body2->id < 5) {
+	else if (body2->id > 2 && body2->id < lastCP) {
 		p2List_item<CheckPoint>* checklist = App->scene_intro->checkPoints.getFirst();
-
 		while (checklist != NULL) {
 			if (checklist->data.body->id == body2->id) {
-				if (checklist->data.checked == false) {
-					checklist->data.checked = true;
-					if (checklist->next != NULL) {
-						checklist->next->data.checked = false;
+				if (lastCheckPoint == checklist->prev->data.body->id) {
+					if (checklist->data.checked == false) {
+						checklist->data.checked = true;
+						if (checklist->next != NULL) {
+							checklist->next->data.checked = false;
+						}
+						lastCheckPoint = body2->id;
 					}
-					lastCheckPoint = body2->id;
+				}
+				
+			}
+			checklist = checklist->next;
+		}	
+	}
+	else if (body2->id == lastCP) {
+		p2List_item<CheckPoint>* checklist = App->scene_intro->checkPoints.getFirst();
+		while (checklist != NULL) {
+			if (checklist->data.body->id == body2->id) {
+				if (lastCheckPoint == checklist->prev->data.body->id) {
+					if (checklist->data.checked == false) {
+						checklist->data.checked = true;
+						App->scene_intro->checkPoints.getFirst()->data.checked = false;
+						lastCheckPoint = body2->id;
+					}
 				}
 			}
 			checklist = checklist->next;
 		}
-				
 	}
-	LOG("COLLIDE WITH CHECKPOINT");
 }
 
 

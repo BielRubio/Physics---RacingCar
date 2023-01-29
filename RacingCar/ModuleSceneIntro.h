@@ -14,6 +14,19 @@ enum class CAM_VIEW{
 	FREE_CAM
 };
 
+enum class LAPS {
+	START,
+	FIRST,
+	SECOND,
+	LAST
+};
+
+enum class RACESTATE {
+	WIN,
+	LOOSE,
+	DEFAULT
+};
+
 struct PhysBody3D;
 struct PhysMotor3D;
 
@@ -43,13 +56,6 @@ public:
 
 	p2List<CheckPoint> checkPoints;
 	p2List<Cylinder> Cylinders;
-	/*
-	PhysBody3D* pb_snake[MAX_SNAKE];
-	Sphere s_snake[MAX_SNAKE];
-
-	PhysBody3D* pb_snake2[MAX_SNAKE];
-	Sphere s_snake2[MAX_SNAKE];
-	*/
 
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;
@@ -143,5 +149,10 @@ public:
 	Cube road31;
 	PhysBody3D* pb_road32;
 	Cube road32;
+
+	RACESTATE race;
+
+	LAPS currentLap;
+
 
 };
