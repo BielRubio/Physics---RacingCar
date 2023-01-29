@@ -272,6 +272,8 @@ update_status ModulePlayer::Update(float dt)
 	}
 	App->window->SetTitle(title);
 
+	
+
 	return UPDATE_CONTINUE;
 }
 void ModulePlayer::Respawn() {
