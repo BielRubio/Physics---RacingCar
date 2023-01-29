@@ -22,9 +22,10 @@ bool ModuleSceneIntro::Start()
 	camView = (CAM_VIEW)0;
 	currentLap = LAPS::START;
 	race = RACESTATE::DEFAULT;
+	state = GAMESTATE::TITLESCREEN;
 
 	//Initialize map
-
+	AddCheckPoint({ 0, 0, 0 }, 90, 20, White, 2, false);//Goal
 	//road
 	ground = Cube(2000, 0, 2000);
 	ground.SetPos(0, 0, 0);
@@ -40,7 +41,7 @@ bool ModuleSceneIntro::Start()
 	road2.SetPos(-25 + 10, 0, 150+25); //-15,175
 	road2.color = { 0.5f,0.5f,0.5f };
 	pb_road2 = App->physics->AddBody(road2, 0);
-	AddCheckPoint({ 0, 0, 150 }, 90, 20, White, 2, false);
+	AddCheckPoint({ 0, 0, 150 }, 90, 20, White, 3, false);
 
 	road3 = Cube(100, 0.2, 20);
 	road3.SetPos(-15 - 75, 0, 175 + 15); // -125, 210
@@ -56,7 +57,7 @@ bool ModuleSceneIntro::Start()
 	road5.SetPos(-180, 0, 230 + 25); // -170,255
 	road5.color = { 0.5f,0.5f,0.5f };
 	pb_road5 = App->physics->AddBody(road5, 0);
-	AddCheckPoint({ -180, 0, 230 }, 90, 20, White, 3, false);
+	AddCheckPoint({ -180, 0, 230 }, 90, 20, White, 4, false);
 
 	road6 = Cube(20, 0.2, 100);
 	road6.SetPos(-180, 5.3, 255+50.6);
@@ -93,7 +94,7 @@ bool ModuleSceneIntro::Start()
 	road11.SetPos(-290 - 75, 14, 445 - 15);
 	road11.color = { 0.5f,0.5f,0.5f };
 	pb_road11 = App->physics->AddBody(road11, 0);
-	AddCheckPoint({ -290, 14, 445 }, 180, 20, White, 4, false);
+	AddCheckPoint({ -290, 14, 445 }, 180, 20, White, 5, false);
 
 	road12 = Cube(10, 0.2, 50);
 	road12.SetPos(-390 + 5, 14, 445 - 40 - 25);
@@ -119,7 +120,7 @@ bool ModuleSceneIntro::Start()
 	road16.SetPos(-290 - 75, 14, 230 - 35);
 	road16.color = { 0.5f,0.5f,0.5f };
 	pb_road16 = App->physics->AddBody(road16, 0);
-	AddCheckPoint({ -365, 14, 230 }, 270, 20, White, 5, false);
+	AddCheckPoint({ -365, 14, 230 }, 270, 20, White, 6, false);
 
 	road17 = Cube(70, 0.2, 120);
 	road17.SetPos(-290 - 75, 0, 120);
@@ -176,7 +177,7 @@ bool ModuleSceneIntro::Start()
 	road25.SetPos(-210 - 75, 0, -250);
 	road25.color = { 0.5f,0.5f,0.5f };
 	pb_road25 = App->physics->AddBody(road25, 0);
-	AddCheckPoint({ -285, 0, -250 }, 270, 20, White, 6, false);
+	AddCheckPoint({ -285, 0, -250 }, 270, 20, White, 7, false);
 
 	road26 = Cube(60, 0.2, 20);
 	road26.SetPos(-170 - 95, 0, -320);
@@ -233,12 +234,6 @@ bool ModuleSceneIntro::Start()
 	flag.color = White;
 	pb_flag = App->physics->AddBody(flag, 0);
 
-	
-	//AddCheckPoint({ 0, 0, 100 }, 90, 20, White, 2, false); // meta
-	//AddCheckPoint({ 25, 0, 200 }, 0, 30, Red, 3, false); // meta
-	//AddCheckPoint({ -175, 0, 375 }, 180, 20, Red, 4, false); // meta
-	//AddCheckPoint({ -300, 0, 300 }, -45, 20, Red, 5, false); // meta
-	AddCheckPoint({ 0, 0, 0 }, 90, 20, White, 7, true);//Goal
 
 	timer.Start();
 
@@ -271,10 +266,11 @@ update_status ModuleSceneIntro::Update(float dt)
 		App->camera->LookAt(App->player->pos);
 		break;
 	}
-	
 
-	
-
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_STATE::KEY_DOWN) state = GAMESTATE::GAMEPLAY;
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+		Reset();
+	}
 	//Render map
 
 	ground.Render();
@@ -386,5 +382,24 @@ void ModuleSceneIntro::AddCheckPoint(vec3 position, float angle, float width, Co
 	App->physics->AddBody(sensorCP.rightC, 0);
 
 	checkPoints.add(sensorCP);
+}
+
+void ModuleSceneIntro::Reset() {
+	state = GAMESTATE::TITLESCREEN;
+	currentLap = LAPS::START;
+	race = RACESTATE::DEFAULT;
+
+	checkPoints.getFirst()->data.checked = false;
+	p2List_item<CheckPoint>* checklist = checkPoints.getFirst()->next;
+	while (checklist != NULL) {
+		checklist->data.checked = true;
+		checklist = checklist->next;
+	}
+
+	App->player->countdown = 3;
+	App->player->loseCondition = 20;
+
+	App->player->lastCheckPoint = 0;
+	App->player->Respawn();
 }
 

@@ -24,8 +24,14 @@ enum class LAPS {
 
 enum class RACESTATE {
 	WIN,
-	LOOSE,
+	LOSE,
 	DEFAULT
+};
+
+enum class GAMESTATE {
+	TITLESCREEN,
+	GAMEPLAY,
+	END
 };
 
 struct PhysBody3D;
@@ -52,6 +58,8 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
 	void AddCheckPoint(vec3 position, float angle, float width, Color color, int id, bool startChecked);
+
+	void Reset();
 
 public:
 
@@ -168,7 +176,10 @@ public:
 
 	LAPS currentLap;
 
+	GAMESTATE state; 
+
 	Timer timer;
 
+	
 
 };

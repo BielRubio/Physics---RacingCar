@@ -34,4 +34,8 @@ public:
 
 	int lastCheckPoint = 0;
 	int lastCP = 7;
+	
+	bool letMovement = false; 
+
+	float countdown, loseCondition, currentTime;
 };

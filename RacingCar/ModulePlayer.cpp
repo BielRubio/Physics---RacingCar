@@ -105,8 +105,10 @@ bool ModulePlayer::Start()
 	vehicle->collision_listeners.add(this);
 	vehicle->SetId(1);
 
-	
-	
+	countdown = 3;
+	loseCondition = 20;
+	currentTime = 0;
+
 	return true;
 }
 
@@ -121,118 +123,168 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
 {
-	//DEBUG FUNCTIONS
-	//Respawn car at starting point
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-	{
-		float aux[16] = { 1,0,0,0,0,1,0,0.3,0,0,1,0,0,0,0,1 };
+	if (App->scene_intro->state == GAMESTATE::GAMEPLAY) {
+		if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+		{
+			float aux[16] = { 1,0,0,0,0,1,0,0.3,0,0,1,0,0,0,0,1 };
 
-		vehicle->SetTransform(aux);
-		vehicle->SetLinearVelocity({ 0,0,0 });
-	}
-	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
-		Respawn();
-	}
-
-	turn = acceleration = brake = 0.0f;
-
-	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && vehicle->GetKmh() <= 200)
-	{
-		acceleration = MAX_ACCELERATION;
-	}
-	App->physics->DragForce(vehicle, 25);
-
-	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		if (vehicle->GetKmh() > 110) {
-			if (turn < TURN_DEGREES)
-				turn += TURN_DEGREES/2;
+			vehicle->SetTransform(aux);
+			vehicle->SetLinearVelocity({ 0,0,0 });
 		}
-		else if (vehicle->GetKmh() > 90) {
-			if (turn < TURN_DEGREES)
-				turn += TURN_DEGREES / 1.75;
+		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) {
+			Respawn();
 		}
-		else if (vehicle->GetKmh() > 70) {
-			if (turn < TURN_DEGREES)
-				turn += TURN_DEGREES / 1.5;
+
+		turn = acceleration = brake = 0.0f;
+
+		//Initial countdown
+		if (countdown >= 0) {
+			countdown -= dt;
 		}
 		else {
-			if (turn < TURN_DEGREES)
-				turn += TURN_DEGREES;
+			App->scene_intro->currentLap = LAPS::FIRST;
+		}		
+		if (App->scene_intro->currentLap != LAPS::START) {
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT && vehicle->GetKmh() <= 200)
+			{
+				acceleration = MAX_ACCELERATION;
+			}
+			App->physics->DragForce(vehicle, 25);
+
+			if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				if (vehicle->GetKmh() > 110) {
+					if (turn < TURN_DEGREES)
+						turn += TURN_DEGREES / 2;
+				}
+				else if (vehicle->GetKmh() > 90) {
+					if (turn < TURN_DEGREES)
+						turn += TURN_DEGREES / 1.75;
+				}
+				else if (vehicle->GetKmh() > 70) {
+					if (turn < TURN_DEGREES)
+						turn += TURN_DEGREES / 1.5;
+				}
+				else {
+					if (turn < TURN_DEGREES)
+						turn += TURN_DEGREES;
+				}
+			}
+			if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				if (vehicle->GetKmh() > 110) {
+					if (turn < TURN_DEGREES)
+						turn -= TURN_DEGREES / 2;
+				}
+				else if (vehicle->GetKmh() > 90) {
+					if (turn < TURN_DEGREES)
+						turn -= TURN_DEGREES / 1.75;
+				}
+				else if (vehicle->GetKmh() > 70) {
+					if (turn < TURN_DEGREES)
+						turn -= TURN_DEGREES / 1.5;
+				}
+				else {
+					if (turn < TURN_DEGREES)
+						turn -= TURN_DEGREES;
+				}
+			}
+			//Go backwards
+			if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && vehicle->GetKmh() >= -90)
+			{
+				acceleration = -MAX_ACCELERATION;
+			}
+
+			if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+			{
+				brake = BRAKE_POWER;
+			}
+
+			if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+				acceleration = MAX_ACCELERATION * 5;
+			}
+			//Apply friction (in case no acceleration or in case it goes too quick, the vehicle starts loosing speed)
+
+			if (App->input->GetKey(SDL_SCANCODE_UP) != KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT) {
+				brake = BRAKE_POWER / 100;
+
+				if (vehicle->GetKmh() > 100) {
+					brake = BRAKE_POWER / 20;
+				}
+			}
+			vehicle->ApplyEngineForce(acceleration);
+			vehicle->Turn(turn);
+			vehicle->Brake(brake);
+
+		
+
+			if (loseCondition >= 0) {
+				loseCondition -= dt;
+			}
+			else {
+				App->scene_intro->race = RACESTATE::LOSE;
+				App->scene_intro->state = GAMESTATE::END;
+			}
+			currentTime += dt;
 		}
+		pos = { vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getX(),
+				vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getY(),
+				vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getZ(), };
+
+		fwVec = { vehicle->vehicle->getForwardVector().getX(),
+				vehicle->vehicle->getForwardVector().getY(),
+				vehicle->vehicle->getForwardVector().getZ(), };
+		 
 	}
-	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		if (vehicle->GetKmh() > 110) {
-			if (turn < TURN_DEGREES)
-				turn -= TURN_DEGREES / 2;
-		}
-		else if (vehicle->GetKmh() > 90) {
-			if (turn < TURN_DEGREES)
-				turn -= TURN_DEGREES / 1.75;
-		}
-		else if (vehicle->GetKmh() > 70) {
-			if (turn < TURN_DEGREES)
-				turn -= TURN_DEGREES / 1.5;
-		}
-		else {
-			if (turn < TURN_DEGREES)
-				turn -= TURN_DEGREES;
-		}
-	}
-	//Go backwards
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT && vehicle->GetKmh() >= -90)
-	{
-		acceleration = -MAX_ACCELERATION;
-	}
-
-	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-	{
-		brake = BRAKE_POWER;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-		acceleration = MAX_ACCELERATION * 5;
-	}
-	//Apply friction (in case no acceleration or in case it goes too quick, the vehicle starts loosing speed)
-
-	if (App->input->GetKey(SDL_SCANCODE_UP) != KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT) {
-		brake = BRAKE_POWER / 100;
-
-		if (vehicle->GetKmh() > 100) {
-			brake = BRAKE_POWER / 20;
-		}
-	}
-	
-
-	vehicle->ApplyEngineForce(acceleration);
-	vehicle->Turn(turn);
-	vehicle->Brake(brake);
-
-	pos = {vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getX(),
-			vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getY(), 
-			vehicle->vehicle->getRigidBody()->getCenterOfMassPosition().getZ(),};
-
-	fwVec = {vehicle->vehicle->getForwardVector().getX(),
-			vehicle->vehicle->getForwardVector().getY(),
-			vehicle->vehicle->getForwardVector().getZ(), };
-
 	vehicle->Render();
 
-	char title[80];
-	int cLap = (int)App->scene_intro->currentLap;
-	if (cLap == -1) cLap = 0;
-	sprintf_s(title, "Speed: %.1f Km/h | Lap: %i/3 | Last lap time: | Finish time: ", vehicle->GetKmh(), cLap);
+	char title[200];
+	if (App->scene_intro->state == GAMESTATE::TITLESCREEN) {
+		sprintf_s(title, "Press Space/Enter to start");
+	}
+	else {
+		if (App->scene_intro->currentLap == LAPS::START) {
+			if (countdown > 0) {
+				sprintf_s(title, "The race will start in %.f seconds", countdown);
+			}
+			else {
+				if (App->scene_intro->race == RACESTATE::LOSE) {
+					sprintf_s(title, "YOU LOSE");
+				}
+				else {
+					sprintf_s(title, "RACE STARTED");
+				}
+			}
+		}
+		else {
+			int cLap = (int)App->scene_intro->currentLap;
+			if (cLap == -1) cLap = 0;
+			sprintf_s(title, "Speed: %.1f Km/h | Lap: %i/3 | Last lap time: %.2f | Finish time: %.2f| Press F3 to Respawn", vehicle->GetKmh(), cLap, currentTime, loseCondition);
+			if (App->scene_intro->currentLap == LAPS::LAST) {
+				if (App->scene_intro->race == RACESTATE::WIN) {
+					sprintf_s(title, "Speed: %.1f Km/h | Lap: %i/3 | Last lap time: | Finish time: | YOU WIN", vehicle->GetKmh(), cLap);
+				}
+			}
+			if (App->scene_intro->race == RACESTATE::LOSE) {
+				sprintf_s(title, "Speed: %.1f Km/h | Lap: %i/3 | Last lap time: | Finish time: | YOU LOSE", vehicle->GetKmh(), cLap);
+			}
+		}
+	}
 	App->window->SetTitle(title);
 
 	return UPDATE_CONTINUE;
 }
 void ModulePlayer::Respawn() {
 	if (lastCheckPoint == 0) {
+		vehicle->ApplyEngineForce(0);
+		vehicle->Turn(0);
+		vehicle->Brake(0);
+
 		vehicle->SetPos(0, 0.3, 0);
 		vehicle->Rotate(90);
 		vehicle->SetLinearVelocity({ 0,0,0 });
 		vehicle->vehicle->getRigidBody()->setAngularVelocity({0,0,0});
+		
 	}
 	else {
 		p2List_item<CheckPoint>* checklist = App->scene_intro->checkPoints.getFirst();
@@ -240,6 +292,9 @@ void ModulePlayer::Respawn() {
 			if (checklist->data.body->id == lastCheckPoint) {
 				vehicle->SetPos(checklist->data.body->GetPos().getX(), checklist->data.body->GetPos().getY(), checklist->data.body->GetPos().getZ());
 				vehicle->Rotate(checklist->data.angle);
+				vehicle->ApplyEngineForce(0);
+				vehicle->Turn(0);
+				vehicle->Brake(0);
 				vehicle->SetLinearVelocity({ 0, 0, 0 });
 				vehicle->vehicle->getRigidBody()->setAngularVelocity({ 0,0,0 });
 			}
@@ -255,10 +310,6 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 		if (App->scene_intro->checkPoints.getFirst()->data.checked == false) {
 			//Update of laps
 			switch (App->scene_intro->currentLap) {
-			case LAPS::START:
-				App->scene_intro->currentLap = LAPS::FIRST;
-				LOG("race start");
-				break;
 			case LAPS::FIRST:
 				App->scene_intro->currentLap = LAPS::SECOND;
 				LOG("second lap start");
@@ -289,6 +340,7 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 							checklist->next->data.checked = false;
 						}
 						lastCheckPoint = body2->id;
+						loseCondition += 5;
 					}
 				}
 				
@@ -305,6 +357,7 @@ void ModulePlayer::OnCollision(PhysBody3D* body1, PhysBody3D* body2) {
 						checklist->data.checked = true;
 						App->scene_intro->checkPoints.getFirst()->data.checked = false;
 						lastCheckPoint = body2->id;
+						loseCondition += 5;
 					}
 				}
 			}
