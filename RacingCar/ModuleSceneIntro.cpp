@@ -238,7 +238,7 @@ bool ModuleSceneIntro::Start()
 	//AddCheckPoint({ 25, 0, 200 }, 0, 30, Red, 3, false); // meta
 	//AddCheckPoint({ -175, 0, 375 }, 180, 20, Red, 4, false); // meta
 	//AddCheckPoint({ -300, 0, 300 }, -45, 20, Red, 5, false); // meta
-	AddCheckPoint({ 0, 0, -20 }, 90, 20, White, 7, false);//Goal
+	AddCheckPoint({ 0, 0, 0 }, 90, 20, White, 7, true);//Goal
 
 
 	return ret;
@@ -342,7 +342,7 @@ void ModuleSceneIntro::AddCheckPoint(vec3 position, float angle, float width, Co
 	//Sensor
 	Cube sensor;
 	sensor.size = { 2,2,width };
-	sensor.SetPos(position.x, position.y, position.z);
+	sensor.SetPos(position.x, position.y + 1, position.z);
 	sensor.SetRotation(angle, { 0, 1, 0 });
 
 	float radius = width / 2;
